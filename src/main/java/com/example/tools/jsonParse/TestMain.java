@@ -34,7 +34,8 @@ public class TestMain {
             String fieldSetName=getFieldSetName(fieldName);
             if (fieldName.indexOf("serial") != -1) continue;
             Class<?> type = declaredField.getType();//字段类型
-
+            System.out.println(fieldName+"-->"+fieldSetName);
+            System.out.println("type:"+type);
             //判断对象类型，根据不同类型获取对象的指
             //Object为对象类型,其他为基础数据类型
             if (type.equals(Object.class)) {
