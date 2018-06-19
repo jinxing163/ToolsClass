@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import org.junit.Test;
 import org.springframework.util.CollectionUtils;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +36,7 @@ public class GsonParseInterfaceTest extends ToolsApplicationTests {
     }
 
     @Test
-    public void jsonToList() throws IllegalAccessException, InstantiationException {
+    public void jsonToList() throws IllegalAccessException, InstantiationException, InvocationTargetException {
 
         Student student=new Student();
         student.setAge(10);
@@ -57,7 +58,7 @@ public class GsonParseInterfaceTest extends ToolsApplicationTests {
 
         Student student1=new Student();
 
-        List<Student> students = GsonParse.JsonToList2(json, Student.class);
+        List<Student> students = GsonParse.JsonToList(json, Student.class);
         System.out.println("students:"+students);
         if(!CollectionUtils.isEmpty(students)){
             students.forEach(stu->{
