@@ -5,6 +5,7 @@ import com.google.gson.*;
 import org.apache.commons.lang.StringUtils;
 
 import java.lang.reflect.Field;
+import java.util.List;
 
 /**
  * @author JinXing
@@ -13,6 +14,12 @@ import java.lang.reflect.Field;
 public class TestMain {
 
     public static void main(String[] args) throws IllegalAccessException {
+        System.out.println("list typeName"+List.class.getTypeName());
+        test1();
+
+    }
+
+    private static void test1() throws IllegalAccessException {
         String jsonStr = "{\"name\":\"三班\",\"students\":[{\"age\":25,\"gender\":\"female\",\"grades\":\"三班\",\"name\":\"露西\",\"score\":{\"网络协议\":98,\"JavaEE\":92,\"计算机基础\":93},\"weight\":51.3},{\"age\":26,\"gender\":\"male\",\"grades\":\"三班\",\"name\":\"杰克\",\"score\":{\"网络安全\":75,\"Linux操作系统\":81,\"计算机基础\":92},\"weight\":66.5},{\"age\":25,\"gender\":\"female\",\"grades\":\"三班\",\"name\":\"莉莉\",\"score\":{\"网络安全\":95,\"Linux操作系统\":98,\"SQL数据库\":88,\"数据结构\":89},\"weight\":55}]}";
 
         //1. 获得 解析者
@@ -34,20 +41,25 @@ public class TestMain {
             String fieldSetName=getFieldSetName(fieldName);
             if (fieldName.indexOf("serial") != -1) continue;
             Class<?> type = declaredField.getType();//字段类型
+            Class<?> declaringClass = declaredField.getDeclaringClass();//当前类
+            String typeName = declaredField.getType().getName();
             System.out.println(fieldName+"-->"+fieldSetName);
-            System.out.println("type:"+type);
+            System.out.println("type:"+typeName);
             //判断对象类型，根据不同类型获取对象的指
             //Object为对象类型,其他为基础数据类型
-            if (type.equals(Object.class)) {
+            if (typeName.equals(Object.class.getTypeName())) {
                 JsonObject asJsonObject = root.getAsJsonObject(fieldName);
                 declaredField.set(fieldName, asJsonObject);
-            } else {
+            }else if(typeName.equals(List.class.getTypeName())){
+                JsonArray asJsonArray = root.getAsJsonArray(fieldName);
+                System.out.println("asJsonArray:"+asJsonArray);
+                declaredField.set(fieldName, asJsonArray);
+            }else {
                 if(JsonPrimitive(root,grades,access,fieldName,fieldSetName))continue;
             }
         }
 
         System.out.println(grades);
-
     }
 
     //获取字段对应的Set方法

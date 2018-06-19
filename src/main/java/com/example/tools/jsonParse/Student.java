@@ -22,7 +22,7 @@ public class Student {
                 ", gender='" + gender + '\'' +
                 ", grades='" + grades + '\'' +
                 ", name='" + name + '\'' +
-                ", score=" + score.toString() +
+//                ", score=" + score.toString() +
                 ", weight=" + weight +
                 '}';
     }
