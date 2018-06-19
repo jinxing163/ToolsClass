@@ -27,11 +27,11 @@ public class GsonParse{
         return target;
     }
 
-    public static <T> List<T> JsonToList(String json, Class<Student> classType) throws InvocationTargetException, IllegalAccessException {
+    public static <T> List<T> JsonToList(String json, Class<T> classType) throws InvocationTargetException, IllegalAccessException {
         if(json ==null)return null;
         Assert.notNull(classType,"classType 不能为空");
 
-        T target = BeanUtils.instantiateClass((Class<T>) classType) ;
+        T target = BeanUtils.instantiateClass(classType) ;
         List<T> jsonList = new Gson().fromJson(json, new TypeToken<List<T>>() {}.getType());
         List<T> targetList=new ArrayList<>();
         for (T t : jsonList) {
