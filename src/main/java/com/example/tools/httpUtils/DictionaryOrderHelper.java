@@ -2,7 +2,7 @@ package com.example.tools.httpUtils;
 
 
 import com.alibaba.dubbo.common.utils.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
+import com.alibaba.dubbo.common.utils.StringUtils;
 
 import java.util.List;
 

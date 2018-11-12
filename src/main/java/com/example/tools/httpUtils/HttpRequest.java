@@ -1,6 +1,6 @@
 package com.example.tools.httpUtils;
 
-import org.apache.commons.lang.StringUtils;
+import com.alibaba.dubbo.common.utils.StringUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
