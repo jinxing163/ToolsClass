@@ -107,9 +107,13 @@
             <artifactId>mail</artifactId>
             <version>1.4.7</version>
         </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+        </dependency>
 
 
-	</dependencies>
+    </dependencies>
 
 	<build>
 		<plugins>
