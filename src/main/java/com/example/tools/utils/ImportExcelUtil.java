@@ -19,12 +19,13 @@ import java.util.List;
  * @date 2018/12/27 18:48
  * @author jinxing
  */
+@SuppressWarnings("ALL")
 public class ImportExcelUtil {
 
     /**2003- 版本的excel*/
-    private final static String excel2003L =".xls";
+    private final static String EXCEL2003L =".xls";
     /**2007+ 版本的excel*/
-    private final static String excel2007U =".xlsx";
+    private final static String EXCEL2007U =".xlsx";
 
     /**
      * 描述：获取IO流中的数据，组装成List<List<Object>>对象
@@ -77,10 +78,10 @@ public class ImportExcelUtil {
     public Workbook getWorkbook(InputStream inStr, String fileName) throws Exception{
         Workbook wb = null;
         String fileType = fileName.substring(fileName.lastIndexOf("."));
-        if(excel2003L.equals(fileType)){
+        if(EXCEL2003L.equals(fileType)){
             //2003-
             wb = new HSSFWorkbook(inStr);
-        }else if(excel2007U.equals(fileType)){
+        }else if(EXCEL2007U.equals(fileType)){
             //2007+
             wb = new XSSFWorkbook(inStr);
         }else{

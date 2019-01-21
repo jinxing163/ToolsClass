@@ -79,7 +79,9 @@ public class HttpRequest {
      */
     public static String sendGet(String url, String param,String charset) {
 
-        if(StringUtils.isEmpty(charset))charset=DEFAULT_CHARSET;
+        if(StringUtils.isEmpty(charset)) {
+            charset=DEFAULT_CHARSET;
+        }
 
         String result = "";
         String line;
@@ -131,7 +133,9 @@ public class HttpRequest {
      */
     public static String sendPost(String url, String param,String charset) {
 
-        if(StringUtils.isEmpty(charset))charset=DEFAULT_CHARSET;
+        if(StringUtils.isEmpty(charset)) {
+            charset=DEFAULT_CHARSET;
+        }
 
         PrintWriter out = null;
         BufferedReader in = null;

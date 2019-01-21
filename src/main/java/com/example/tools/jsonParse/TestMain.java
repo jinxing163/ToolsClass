@@ -36,12 +36,21 @@ public class TestMain {
         MethodAccess access = MethodAccess.get(aClass);
         Field[] declaredFields = aClass.getDeclaredFields();
         for (Field declaredField : declaredFields) {
-            if (declaredField == null) continue;
-            String fieldName = declaredField.getName();//字段名称
+            if (declaredField == null) {
+                continue;
+            }
+
+            //字段名称
+            String fieldName = declaredField.getName();
             String fieldSetName=getFieldSetName(fieldName);
-            if (fieldName.indexOf("serial") != -1) continue;
-            Class<?> type = declaredField.getType();//字段类型
-            Class<?> declaringClass = declaredField.getDeclaringClass();//当前类
+            if (fieldName.indexOf("serial") != -1) {
+                continue;
+            }
+
+            //字段类型
+            Class<?> type = declaredField.getType();
+            //当前类
+            Class<?> declaringClass = declaredField.getDeclaringClass();
             String typeName = declaredField.getType().getName();
             System.out.println(fieldName+"-->"+fieldSetName);
             System.out.println("type:"+typeName);
@@ -55,16 +64,20 @@ public class TestMain {
                 System.out.println("asJsonArray:"+asJsonArray);
                 declaredField.set(fieldName, asJsonArray);
             }else {
-                if(JsonPrimitive(root,grades,access,fieldName,fieldSetName))continue;
+                if(JsonPrimitive(root,grades,access,fieldName,fieldSetName)) {
+                    continue;
+                }
             }
         }
 
         System.out.println(grades);
     }
 
-    //获取字段对应的Set方法
+    /**获取字段对应的Set方法*/
     private static String getFieldSetName(String name) {
-        if (StringUtils.isEmpty(name)) return null;
+        if (StringUtils.isEmpty(name)) {
+            return null;
+        }
         StringBuffer setName = new StringBuffer("set");
         setName.append(name.substring(0, 1).toUpperCase() + name.substring(1, name.length()));
 

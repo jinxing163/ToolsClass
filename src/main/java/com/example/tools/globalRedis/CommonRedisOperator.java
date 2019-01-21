@@ -24,7 +24,7 @@ public class CommonRedisOperator {
     private static JedisPool jedisPoolSlave;
     private static final int MAX_HEARTBEAT_RETRIES = 3;
     private static final AtomicInteger masterStatus = new AtomicInteger(3);
-    private static final AtomicInteger slaveStatus = new AtomicInteger(3);
+    private static final AtomicInteger SLAVE_STATUS = new AtomicInteger(3);
     private static String poolConfigFile = "global_redis_pool.properties";
 
     public CommonRedisOperator() {
@@ -105,7 +105,7 @@ public class CommonRedisOperator {
             result = handle(jedisPoolMaster, handler);
         }
 
-        if (slaveStatus.get() >= 0) {
+        if (SLAVE_STATUS.get() >= 0) {
             result = handle(jedisPoolSlave, handler);
         }
 
@@ -117,7 +117,7 @@ public class CommonRedisOperator {
         if (masterStatus.get() >= 0) {
             jedisPool = jedisPoolMaster;
         } else {
-            if (slaveStatus.get() < 0) {
+            if (SLAVE_STATUS.get() < 0) {
                 throw new RuntimeException("公共缓存主、备皆不能完成心跳，请运维检查公共缓存服务是否正常!");
             }
 
@@ -129,6 +129,7 @@ public class CommonRedisOperator {
 
     public static final String set(final String key, final String value) {
         return (String) write(new JedisHandler<String>() {
+            @Override
             public String handle(Jedis jedis) {
                 return jedis.set(key, value);
             }
@@ -137,6 +138,7 @@ public class CommonRedisOperator {
 
     public static final Long setnx(final String key, final String value) {
         return (Long) write(new JedisHandler<Long>() {
+            @Override
             public Long handle(Jedis jedis) {
                 return jedis.setnx(key, value);
             }
@@ -145,6 +147,7 @@ public class CommonRedisOperator {
 
     public static final String hmset(final String key, final Map<String, String> hash) {
         return (String) write(new JedisHandler<String>() {
+            @Override
             public String handle(Jedis jedis) {
                 return jedis.hmset(key, hash);
             }
@@ -153,6 +156,7 @@ public class CommonRedisOperator {
 
     public static final Long hset(final String key, final String field, final String value) {
         return (Long) write(new JedisHandler<Long>() {
+            @Override
             public Long handle(Jedis jedis) {
                 return jedis.hset(key, field, value);
             }
@@ -161,6 +165,7 @@ public class CommonRedisOperator {
 
     public static final String get(final String key) {
         return (String) read(new JedisHandler<String>() {
+            @Override
             public String handle(Jedis jedis) {
                 return jedis.get(key);
             }
@@ -169,6 +174,7 @@ public class CommonRedisOperator {
 
     public static final String hget(final String key, final String field) {
         return (String) read(new JedisHandler<String>() {
+            @Override
             public String handle(Jedis jedis) {
                 return jedis.hget(key, field);
             }
@@ -177,6 +183,7 @@ public class CommonRedisOperator {
 
     public static final List<String> hmget(final String key, final String... fields) {
         return (List) read(new JedisHandler<List<String>>() {
+            @Override
             public List<String> handle(Jedis jedis) {
                 return jedis.hmget(key, fields);
             }
@@ -185,6 +192,7 @@ public class CommonRedisOperator {
 
     public static final Map<String, String> hgetAll(final String key) {
         return (Map) read(new JedisHandler<Map<String, String>>() {
+            @Override
             public Map<String, String> handle(Jedis jedis) {
                 return jedis.hgetAll(key);
             }
@@ -193,6 +201,7 @@ public class CommonRedisOperator {
 
     public static final Long lpush(final String key, final String... values) {
         return (Long) write(new JedisHandler<Long>() {
+            @Override
             public Long handle(Jedis jedis) {
                 return jedis.lpush(key, values);
             }
@@ -201,6 +210,7 @@ public class CommonRedisOperator {
 
     public static final List<String> lrange(final String key, final long start, final long end) {
         return (List) read(new JedisHandler<List<String>>() {
+            @Override
             public List<String> handle(Jedis jedis) {
                 return jedis.lrange(key, start, end);
             }
@@ -209,6 +219,7 @@ public class CommonRedisOperator {
 
     public static final Long llen(final String key) {
         return (Long) read(new JedisHandler<Long>() {
+            @Override
             public Long handle(Jedis jedis) {
                 return jedis.llen(key);
             }
@@ -217,6 +228,7 @@ public class CommonRedisOperator {
 
     public static final Long sadd(final String key, final String... members) {
         return (Long) write(new JedisHandler<Long>() {
+            @Override
             public Long handle(Jedis jedis) {
                 return jedis.sadd(key, members);
             }
@@ -225,6 +237,7 @@ public class CommonRedisOperator {
 
     public static final Set<String> smembers(final String key) {
         return (Set) read(new JedisHandler<Set<String>>() {
+            @Override
             public Set<String> handle(Jedis jedis) {
                 return jedis.smembers(key);
             }
@@ -259,6 +272,7 @@ public class CommonRedisOperator {
         }
 
         Thread thread = new Thread(new Runnable() {
+            @Override
             public void run() {
                 while (true) {
                     try {
@@ -270,9 +284,9 @@ public class CommonRedisOperator {
                         }
 
                         if (CommonRedisOperator.heartbeat(CommonRedisOperator.jedisPoolSlave)) {
-                            CommonRedisOperator.slaveStatus.set(3);
+                            CommonRedisOperator.SLAVE_STATUS.set(3);
                         } else {
-                            CommonRedisOperator.slaveStatus.decrementAndGet();
+                            CommonRedisOperator.SLAVE_STATUS.decrementAndGet();
                         }
                     } catch (Exception var2) {
                         var2.printStackTrace();

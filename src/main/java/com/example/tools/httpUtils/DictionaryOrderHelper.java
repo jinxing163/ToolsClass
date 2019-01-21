@@ -25,7 +25,9 @@ public class DictionaryOrderHelper {
      */
     public static String getDictionaryOrder(List<String> dictionaryList){
 
-        if(CollectionUtils.isEmpty(dictionaryList))return null;
+        if(CollectionUtils.isEmpty(dictionaryList)) {
+            return null;
+        }
 
         //1.将列表进行自然排序 (升序)
         CollectionUtils.sort(dictionaryList);

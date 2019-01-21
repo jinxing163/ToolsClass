@@ -8,6 +8,7 @@ public class ThreadTest extends Thread{
 
     // run方法中编写 多线程需要执行的代码
 
+    @Override
     public void run() {
         for (int i = 0; i< 10; i++) {
             System.out.println("i:" + i);
