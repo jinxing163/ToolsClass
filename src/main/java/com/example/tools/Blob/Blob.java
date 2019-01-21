@@ -39,7 +39,8 @@ public class Blob {
             fis.read(buffer);
             httpServletResponse.reset();
             //由于火狐和其他浏览器显示名称的方式不相同，需要进行不同的编码处理
-            if (agent.contains("FIREFOX")) {//火狐浏览器
+            //火狐浏览器
+            if (agent.contains("FIREFOX")) {
                 httpServletResponse.addHeader("Content-Disposition", "attachment;filename=" + new String(fileName.getBytes("GB2312"), "ISO-8859-1"));
             } else {//其他浏览器
                 httpServletResponse.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));

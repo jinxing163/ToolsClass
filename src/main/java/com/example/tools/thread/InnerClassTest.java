@@ -12,12 +12,9 @@ public class InnerClassTest {
         System.out.println("匿名内部类................");
 
         System.out.println("-----多线程创建开始-----");
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 0; i< 10; i++) {
-                    System.out.println("i:" + i);
-                }
+        Thread thread = new Thread(() -> {
+            for (int i = 0; i< 10; i++) {
+                System.out.println("i:" + i);
             }
         });
         thread.start();

@@ -8,17 +8,14 @@ public class DaemonThread {
 
 
     public static void main(String[] args) {
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    try {
-                        Thread.sleep(100);
-                    } catch (Exception e) {
-                        // TODO: handle exception
-                    }
-                    System.out.println("我是子线程...");
+        Thread thread = new Thread(() -> {
+            while (true) {
+                try {
+                    Thread.sleep(100);
+                } catch (Exception e) {
+                    // TODO: handle exception
                 }
+                System.out.println("我是子线程...");
             }
         });
         //设置线程为守护线程

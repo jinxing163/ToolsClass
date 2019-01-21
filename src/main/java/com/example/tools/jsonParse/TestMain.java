@@ -64,7 +64,7 @@ public class TestMain {
                 System.out.println("asJsonArray:"+asJsonArray);
                 declaredField.set(fieldName, asJsonArray);
             }else {
-                if(JsonPrimitive(root,grades,access,fieldName,fieldSetName)) {
+                if(jsonPrimitive(root,grades,access,fieldName,fieldSetName)) {
                     continue;
                 }
             }
@@ -84,9 +84,11 @@ public class TestMain {
         return setName.toString();
     }
 
-    private static <T> boolean JsonPrimitive(JsonObject root, T remoteTarget, MethodAccess access, String name, String fieldSetName) {
-        JsonPrimitive asJsonPrimitive = root.getAsJsonPrimitive(name);//Json对应的字段值
-        if (asJsonPrimitive.isBoolean()) {//boolean 类型
+    private static <T> boolean jsonPrimitive(JsonObject root, T remoteTarget, MethodAccess access, String name, String fieldSetName) {
+        //Json对应的字段值
+        JsonPrimitive asJsonPrimitive = root.getAsJsonPrimitive(name);
+        if (asJsonPrimitive.isBoolean()) {
+            //boolean 类型
             access.invoke(remoteTarget, fieldSetName, asJsonPrimitive.getAsBoolean());
         } else if (asJsonPrimitive.isNumber()) {
             access.invoke(remoteTarget, fieldSetName, asJsonPrimitive.getAsLong());

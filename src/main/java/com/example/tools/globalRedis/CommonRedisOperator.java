@@ -23,7 +23,7 @@ public class CommonRedisOperator {
     private static JedisPool jedisPoolMaster;
     private static JedisPool jedisPoolSlave;
     private static final int MAX_HEARTBEAT_RETRIES = 3;
-    private static final AtomicInteger masterStatus = new AtomicInteger(3);
+    private static final AtomicInteger MASTER_STATUS = new AtomicInteger(3);
     private static final AtomicInteger SLAVE_STATUS = new AtomicInteger(3);
     private static String poolConfigFile = "global_redis_pool.properties";
 
@@ -101,7 +101,7 @@ public class CommonRedisOperator {
 
     private static final <T> T write(JedisHandler<T> handler) {
         T result = null;
-        if (masterStatus.get() >= 0) {
+        if (MASTER_STATUS.get() >= 0) {
             result = handle(jedisPoolMaster, handler);
         }
 
@@ -114,7 +114,7 @@ public class CommonRedisOperator {
 
     private static final <T> T read(JedisHandler<T> handler) {
         JedisPool jedisPool = null;
-        if (masterStatus.get() >= 0) {
+        if (MASTER_STATUS.get() >= 0) {
             jedisPool = jedisPoolMaster;
         } else {
             if (SLAVE_STATUS.get() < 0) {
@@ -278,9 +278,9 @@ public class CommonRedisOperator {
                     try {
                         TimeUnit.SECONDS.sleep(1L);
                         if (CommonRedisOperator.heartbeat(CommonRedisOperator.jedisPoolMaster)) {
-                            CommonRedisOperator.masterStatus.set(3);
+                            CommonRedisOperator.MASTER_STATUS.set(3);
                         } else {
-                            CommonRedisOperator.masterStatus.decrementAndGet();
+                            CommonRedisOperator.MASTER_STATUS.decrementAndGet();
                         }
 
                         if (CommonRedisOperator.heartbeat(CommonRedisOperator.jedisPoolSlave)) {
